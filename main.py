@@ -10,8 +10,8 @@ def ether():
         fullDataScraped = scraper.get('https://etherscan.io/address/0xded17acd827814ab885bf993aa25e84f9ca62cab?fbclid=IwAR2jOXgMemNif20ynFgfxW9f_yvqB5RHLmY2Dk_JIcJjRFd_RD1sK_99fMY.com').content
         soup = BeautifulSoup(fullDataScraped,'html.parser')
         txn_hash_table = soup.table
-        table_rows = txn_hash_table.find_all('tr')
-        
+        table_rows  = txn_hash_table.find_all('tr')
+
         allData=[]
         for tr in table_rows:
             td = tr.find_all('td')
@@ -24,16 +24,12 @@ def ether():
             if len(th)!=0:
                 webHeader.append([i.text for i in td])
 
-        print(webHeader)
-
         df = pd.DataFrame(allData)
         df.to_csv('filename.csv', index=False,header=webHeader)
 
 
-
     except Exception as Err:
         print('Error: ',Err)
-
 
 
 if __name__ == '__main__':
