@@ -1,4 +1,5 @@
 #Version 84.0.4147.125 (Official Build) (64-bit) chrome 
+#download the data of etherium and save the into csv file
 #ctrl k c / ctrl k u
 import cfscrape
 from bs4 import BeautifulSoup
