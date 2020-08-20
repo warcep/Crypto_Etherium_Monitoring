@@ -5,6 +5,7 @@ import cfscrape
 from bs4 import BeautifulSoup
 import pandas as pd
 
+
 def ether():
     try:
         scraper = cfscrape.create_scraper()
@@ -19,15 +20,27 @@ def ether():
             td = tr.find_all('td')
             if len(td)!=0:
                 allData.append([i.text for i in td])
-        df = pd.DataFrame(allData)
-        df.to_csv('filename.csv', index=False,header=webHeader,sep='\t')
+        new_CSV_DATA = pd.DataFrame(allData)
+        old_CSV_DATA = pd.read_csv('etherium_Website_Data.csv',sep='\t')
+        
+        new_CSV_DATA_tuple = [tuple(x) for x in new_CSV_DATA.values]
+        old_CSV_DATA_tuple = [tuple(x) for x in old_CSV_DATA.values]
 
-
-
+        for i in range(0,len(new_CSV_DATA_tuple)):
+            data_the_same=False
+            for j in range(0,len(old_CSV_DATA_tuple)):
+                if str(new_CSV_DATA_tuple[i][1]) == str(old_CSV_DATA_tuple[j][1]):   #1 its the column of Block number (like ID)
+                    data_the_same=True
+            if data_the_same==False: #for diff in database its mean that we want to save new DB & send notification via phone about changes
+                new_CSV_DATA.to_csv('etherium_Website_Data.csv', index=False,header=webHeader,sep='\t')
+                send_notification()
+                break
 
     except Exception as Err:
         print('Error: ',Err)
 
+def send_notification():
+    pass
 
 if __name__ == '__main__':
     ether()
