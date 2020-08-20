@@ -4,7 +4,9 @@
 import cfscrape
 from bs4 import BeautifulSoup
 import pandas as pd
-
+import os
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import Mail
 
 def ether():
     try:
@@ -31,16 +33,26 @@ def ether():
             for j in range(0,len(old_CSV_DATA_tuple)):
                 if str(new_CSV_DATA_tuple[i][1]) == str(old_CSV_DATA_tuple[j][1]):   #1 its the column of Block number (like ID)
                     data_the_same=True
-            if data_the_same==False: #for diff in database its mean that we want to save new DB & send notification via phone about changes
+            if data_the_same==False: #for diff in database its mean that we want to save new DB & send notification via  about changes
                 new_CSV_DATA.to_csv('etherium_Website_Data.csv', index=False,header=webHeader,sep='\t')
                 send_notification()
                 break
 
-    except Exception as Err:
-        print('Error: ',Err)
+    except Exception as e:
+        print('Error to check: ',e)
 
 def send_notification():
-    pass
+    try:
+        message = Mail(
+            from_email='twilio@gmail.com',
+            to_emails='warcep@gmail.com',
+            subject='etherscan - DB updated, new position on website',
+            html_content='<strong>Welcome Dawid</strong>')
+        sg = SendGridAPIClient(os.environ.get('SKb018f913a8a9afb484a2f03cc5a28e40'))
+        response = sg.send(message)
+        print(response.status_code, response.body, response.headers)
+    except Exception as e:
+        print('Error to check: ',e)
 
 if __name__ == '__main__':
     ether()
