@@ -1,14 +1,14 @@
-#Version 84.0.4147.125 (Official Build) (64-bit) chrome 
 #download the data of etherium and save the into csv file
-#ctrl k c / ctrl k u
+
 import cfscrape
 from bs4 import BeautifulSoup
 import pandas as pd
+import base64
 import os
 from sendgrid import SendGridAPIClient
-from sendgrid.helpers.mail import Mail
+from sendgrid.helpers.mail import (Mail, Attachment, FileContent, FileName, FileType, Disposition)
 
-def ether():
+def check_ether():
     try:
         scraper = cfscrape.create_scraper()
         fullDataScraped = scraper.get('https://etherscan.io/address/0xded17acd827814ab885bf993aa25e84f9ca62cab?fbclid=IwAR2jOXgMemNif20ynFgfxW9f_yvqB5RHLmY2Dk_JIcJjRFd_RD1sK_99fMY.com').content
@@ -44,15 +44,28 @@ def ether():
 def send_notification():
     try:
         message = Mail(
-            from_email='twilio@gmail.com',
-            to_emails='warcep@gmail.com',
-            subject='etherscan - DB updated, new position on website',
+            from_email='warcep@gmail.com',
+            to_emails='dawid.nieszporek1995@gmail.com',
+            subject='Etherscan - DB updated, new position on website - please check',
             html_content='<strong>Welcome Dawid</strong>')
-        sg = SendGridAPIClient(os.environ.get('SKb018f913a8a9afb484a2f03cc5a28e40'))
-        response = sg.send(message)
-        print(response.status_code, response.body, response.headers)
+        
+        with open('etherium_Website_Data.csv', 'rb') as f:
+            data = f.read()
+            f.close()
+        encoded_file = base64.b64encode(data).decode()
+        attachedFile = Attachment(
+            FileContent(encoded_file),
+            FileName('etherium_Website_Data.csv'),
+            FileType('application/csv'),
+            Disposition('attachment')
+        )
+        message.attachment = attachedFile
+        
+        sg = SendGridAPIClient('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')
+        sg.send(message)
+
     except Exception as e:
         print('Error to check: ',e)
 
 if __name__ == '__main__':
-    ether()
+    check_ether()
