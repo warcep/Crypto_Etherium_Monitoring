@@ -57,7 +57,7 @@ def send_notification():
         encoded_file = base64.b64encode(data).decode()
         attachedFile = Attachment(
             FileContent(encoded_file),
-            FileName('etherium_Website_Data.csv'),
+            FileName('Etherium_Website_Data.csv'),
             FileType('application/csv'),
             Disposition('attachment')
         )
