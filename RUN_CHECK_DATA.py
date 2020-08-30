@@ -1,5 +1,3 @@
-#download the data of etherium and save the into csv file
-
 import cfscrape
 from bs4 import BeautifulSoup
 import pandas as pd
