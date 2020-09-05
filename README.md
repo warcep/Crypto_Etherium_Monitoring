@@ -10,7 +10,7 @@
 
 Monitoring the website [etherium] and for any changes on website script will send email with data [.csv]. Script help us to be on time with buying & selling cryptocurrency
 
-![Image of PC](https://github.com/warcep/Crypto_Etherium_Monitoring/blob/master/images/email_template_github.JPG
+![Image of PC](https://github.com/warcep/Crypto_Etherium_Monitoring/blob/master/images/email_template_github.JPG)
 
 
 
