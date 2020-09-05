@@ -23,7 +23,7 @@ def check_ether():
             if len(td)!=0:
                 allData.append([i.text for i in td])
         new_CSV_DATA = pd.DataFrame(allData)
-        old_CSV_DATA = pd.read_csv('Etherium_Website_Data.csv',sep='\t')
+        old_CSV_DATA = pd.read_csv('data/Etherium_Website_Data.csv',sep='\t')
         
         new_CSV_DATA_tuple = [tuple(x) for x in new_CSV_DATA.values]
         old_CSV_DATA_tuple = [tuple(x) for x in old_CSV_DATA.values]
@@ -34,8 +34,9 @@ def check_ether():
                 if str(new_CSV_DATA_tuple[i][1]) == str(old_CSV_DATA_tuple[j][1]):   #1 its the column of Block number (like ID)
                     data_the_same=True
             if data_the_same==False: #for diff in database its mean that we want to save new DB & send notification via  about changes
-                new_CSV_DATA.to_csv('Etherium_Website_Data.csv', index=False,header=webHeader,sep='\t')
+                new_CSV_DATA.to_csv('data/Etherium_Website_Data.csv', index=False,header=webHeader,sep='\t')
                 send_notification()
+                print("discrepancy in data - notification will be send")
                 break
 
     except Exception as e:
@@ -48,8 +49,9 @@ def send_notification():
             to_emails='dawid.nieszporek1995@gmail.com',
             subject='Etherscan - DB updated, new position on website - please check',
             html_content=html_email_template.email_template)
+
         
-        with open('Etherium_Website_Data.csv', 'rb') as f:
+        with open('data/Etherium_Website_Data.csv', 'rb') as f:
             data = f.read()
             f.close()
         encoded_file = base64.b64encode(data).decode()
