@@ -5,7 +5,7 @@ import base64
 import os
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import (Mail, Attachment, FileContent, FileName, FileType, Disposition)
-import html_email_template
+from styles.html_email_template import *
 import SENDGRID_API_KEY
 
 def check_ether():
@@ -35,7 +35,7 @@ def check_ether():
                     data_the_same=True
             if data_the_same==False: #for diff in database its mean that we want to save new DB & send notification via  about changes
                 new_CSV_DATA.to_csv('data/Etherium_Website_Data.csv', index=False,header=webHeader,sep='\t')
-                send_notification()
+                #send_notification()
                 print("discrepancy in data - notification will be send")
                 break
 
